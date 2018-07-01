@@ -1,14 +1,12 @@
 import * as React from 'react';
 import './store.css';
 
-export interface SaleItemProps {
-    quantity: number,
-    name: string,
+import { Price } from './inventory';
 
-    sales?: Array<{
-        amount: number,
-        cost: number
-    }>,
+export interface SaleItemProps {
+    name: string;
+    quantity: number;
+    salePrices: Price[];
 };
 
 export default (props: SaleItemProps) => (
@@ -18,11 +16,11 @@ export default (props: SaleItemProps) => (
         </div>
         <div className="card-body">
             <h4 className="mt-3 mb-4">You have {props.quantity}</h4>
-            {props.sales && props.sales.map((sale) =>
+            {props.salePrices.map((price) =>
                 <button
-                    key={sale.amount + sale.cost}
+                    key={price.amount + price.cost}
                     type="button"
-                    className="btn btn-lg btn-block btn-primary">Buy {sale.amount} for ${sale.cost}</button>
+                    className="btn btn-lg btn-block btn-primary">Buy {price.amount} for ${price.cost}</button>
                 )}
         </div>
     </div>

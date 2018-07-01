@@ -1,5 +1,6 @@
 import * as React from 'react';
-import SaleItem from './saleItem';
+import { AvailableForSale, Inventory } from './inventory';
+import { default as StoreItem } from './item';
 
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid/dist/styles/ag-grid.css';
@@ -7,17 +8,31 @@ import 'ag-grid/dist/styles/ag-grid.css';
 import 'ag-grid/dist/styles/ag-theme-balham.css';
 import './store.css';
 
-// const gridProps: GridOptions = {
-//     columnDefs: [
-//         {field: 'name', headerName: 'Name', width: 120},
-//         {field: 'count', headerName: 'In Stock', width: 100},
-//         {field: 'cost', headerName: 'Cost', width: 120},
-//         {field: 'actions', headerName: 'Actions'},
-//     ],
-//     rowData:[
-//         {name: 'Lemons', count: '5', cost: '$.25 each', actions: 'Buy'}
-//     ],
-// }
+const allInventory: Inventory = ({
+  cups: 120,
+  lemons: 5,
+});
+
+const allAvailableForSale: AvailableForSale = ({
+  cups: [
+    {amount: 80, cost: 2.25},
+    {amount: 200, cost: 4.25},
+  ],
+  lemons: [
+    {amount: 1, cost: .25},
+  ]
+});
+
+const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
+const getStoreItems = (inventory: Inventory, availableForSale: AvailableForSale) =>
+  (Object as any).entries(inventory).map(([name,quantity]: [string, number]) => (
+    <StoreItem
+      name={capitalize(name)}
+      quantity={quantity}
+      salePrices={availableForSale[name]}
+      />
+  ));
 
 export default () => (
   <div>
@@ -38,13 +53,7 @@ export default () => (
 
     <div className="container">
       <div className="card-deck mb-3 text-center">
-        <SaleItem name={'Lemons'} quantity={5} sales={[
-          {amount: 1, cost: .25},
-        ]}/>
-        <SaleItem name={'Cups'} quantity={120} sales={[
-          {amount: 80, cost: 2.25},
-          {amount: 200, cost: 4.25},
-        ]}/>
+        { getStoreItems(allInventory, allAvailableForSale) }
       </div>
     </div>
     {/* <div className="ag-theme-balham" style={{height: '200px'}}>
