@@ -11,10 +11,6 @@
     max-width: 230px;
   }
 
-  .nav-header {
-      background-color: rgba(0, 50, 0, 0.03);
-  }
-
   .border-top { border-top: 1px solid #e5e5e5; }
   .border-bottom { border-bottom: 1px solid #e5e5e5; }
 
