@@ -1,13 +1,16 @@
 import * as React from 'react';
 import './store.css';
 
-import { Price } from './inventory';
+import { Price } from '../store';
 
 export interface SaleItemProps {
     name: string;
     quantity: number;
     salePrices: Price[];
+    onBuy: (amount: number, cost: number) => void;
 };
+
+//tslint:disable
 
 export default (props: SaleItemProps) => (
     <div className="card mb-4 box-shadow">
@@ -20,8 +23,10 @@ export default (props: SaleItemProps) => (
                 <button
                     key={price.amount + price.cost}
                     type="button"
-                    className="btn btn-lg btn-block btn-primary">Buy {price.amount} for ${price.cost}</button>
-                )}
+                    className="btn btn-lg btn-block btn-primary"
+                    onClick={() => props.onBuy(price.amount, price.cost)}>
+                        Buy {price.amount} for ${price.cost}
+                </button>)}
         </div>
     </div>
 )
