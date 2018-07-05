@@ -12,6 +12,8 @@ export default Record({
         ]),
     })(),
 
+    money: 20.55,
+
     inventory: Record({
         cups: 20,
         lemons: 0,
