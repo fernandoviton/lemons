@@ -4,11 +4,6 @@ import initialState from './initialState';
 
 const root = (state = initialState, action: Action) => {
 
-    // TODO: we can add something like this
-    // to help catch if folks accidentally return a non immutable
-    // if (!immutable.isImmutable(state))
-    //    throw 'not immutable';
-
     switch (action.type) {
         case ActionType.BUY_ITEM:
             return state.withMutations((s: State) => s
