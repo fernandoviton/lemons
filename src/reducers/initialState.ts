@@ -12,7 +12,7 @@ export default Record({
         ]),
     })(),
 
-    money: 20.55,
+    money: 4.25 * 2,
 
     inventory: Record({
         cups: 20,
