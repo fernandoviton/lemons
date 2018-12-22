@@ -34,8 +34,6 @@ export interface ItemStoreProps {
 // tslint:disable:jsx-no-lambda
 const getStoreItems = (props: ItemStoreProps) =>
   (Object as any).entries(props.inventory).map(([name, quantity]: [string, number]) => {
-    // tslint:disable-next-line:no-console
-    console.log(name, quantity, props);
     return <StoreItem
       key={name}
       name={capitalize(name)}
