@@ -22,4 +22,8 @@ export default Record({
         lemons: 0,
         poundsOfSugar: 0,
     })(),
+
+    standInventory: Record({
+        lemonadePitchers: 0.0,
+    })(),
 })() as State;

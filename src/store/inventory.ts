@@ -8,11 +8,11 @@ export interface AvailableForSale {
 }
 
 export interface Inventory {
-    cups: number,
-    lemons: number,
-    poundsOfSugar: number,
+    cups: number;
+    lemons: number;
+    poundsOfSugar: number;
 }
 
-export interface Stand {
+export interface StandInventory {
     lemonadePitchers: number;
 }
