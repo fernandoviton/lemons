@@ -8,5 +8,11 @@ export interface AvailableForSale {
 }
 
 export interface Inventory {
-    [k: string]: number; // TODO: change to interface and add display name
+    cups: number,
+    lemons: number,
+    poundsOfSugar: number,
+}
+
+export interface Stand {
+    lemonadePitchers: number;
 }

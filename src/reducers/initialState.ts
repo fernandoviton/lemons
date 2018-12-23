@@ -10,6 +10,9 @@ export default Record({
         lemons: List([
             {amount: 1, cost: .25},
         ]),
+        poundsOfSugar: List([
+            {amount: 1, cost: 3.75}
+        ])
     })(),
 
     money: 4.25 * 2,
@@ -17,5 +20,6 @@ export default Record({
     inventory: Record({
         cups: 20,
         lemons: 0,
+        poundsOfSugar: 0,
     })(),
 })() as State;
