@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { AvailableForSale, Inventory } from '../store';
 import { default as StoreItem } from './item';
-import { default as Stand, StandProps } from './stand';
 
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid/dist/styles/ag-grid.css';
@@ -50,14 +49,13 @@ export interface ItemStoreProps {
   onBuy: (name: string, amount: number, cost: number) => void
 }
 
-export default (props: ItemStoreProps & StandProps) => (
+export default (props: ItemStoreProps) => (
   <div>
-    <div className="container">
+    <div className="container pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <div className="card-deck mb-3 text-center">
         { getStoreItems(props) }
       </div>
     </div>
-    <Stand {...props}/>
   </div>
 );
 
