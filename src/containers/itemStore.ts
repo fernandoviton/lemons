@@ -4,9 +4,9 @@ import ItemStore from '../components/itemStore';
 import { Dispatch, State } from '../store';
 
 export const mapStateToProps = (state: State) => ({
-    availableForSale: state.availableForSale.toJS(),
-    inventory: state.inventory.toJS(), // TODO:
-    standInventory: state.standInventory.toJS(), // TODO:
+    availableForSale: state.availableForSale,
+    inventory: state.inventory,
+    standInventory: state.standInventory,
 });
 
 export const mapDispatchToProps = (dispatch: Dispatch) => ({

@@ -1,8 +1,8 @@
-import { List, Record } from 'immutable';
+import { List } from 'immutable';
 import { State } from '../store';
 
-export default Record({
-    availableForSale: Record({
+export default {
+    availableForSale: {
         cups: List([
             {amount: 80, cost: 2.25},
             {amount: 200, cost: 4.25},
@@ -12,18 +12,18 @@ export default Record({
         ]),
         poundsOfSugar: List([
             {amount: 1, cost: 3.75}
-        ])
-    })(),
+        ]),
+    },
 
     money: 4.25 * 2,
 
-    inventory: Record({
+    inventory: {
         cups: 20,
         lemons: 0,
         poundsOfSugar: 0,
-    })(),
+    },
 
-    standInventory: Record({
+    standInventory: {
         lemonadePitchers: 0.0,
-    })(),
-})() as State;
+    },
+} as State;
