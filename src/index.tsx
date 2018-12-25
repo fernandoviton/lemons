@@ -7,7 +7,10 @@ import configureStore from './configureStore';
 import registerServiceWorker from './registerServiceWorker';
 
 const { store, persistor } = configureStore();
-// persistor.purge(); // TODO: do this somehow (add restart?)
+
+if(window.location.pathname === '/new') {
+    persistor.purge();
+}
 
 ReactDOM.render(
     <Provider store={store}>
