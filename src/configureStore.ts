@@ -18,12 +18,6 @@ const enhancers = composeEnhancers(
     // other store enhancers if any
   );
 
-// const stateReconciler = (inboundState: any, outboundState: any, reducedState: any) => {
-//   // tslint:disable-next-line:no-console
-//   console.log(inboundState, outboundState, reducedState);
-//   return inboundState || outboundState || reducedState;
-// };
-
 const persistConfig: PersistConfig = {
   debug: true,
   key: 'root',

@@ -12,10 +12,6 @@ const root = (state: State = initialState, action: Action) => {
                 ...state,
                 inventory: {...state.inventory, [action.name]: amount},
                 money};
-            // return state.withMutations((s: State) => s
-            //     .set('inventory', state.inventory.set(action.name,
-            //         state.inventory.get(action.name) + action.amount))
-            //     .set('money', state.money - action.cost));
 
         default:
             // This can happen if redux sends the action (like at init)
