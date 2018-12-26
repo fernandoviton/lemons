@@ -2,6 +2,8 @@ import { Action } from '../actions';
 
 export { AvailableForSale, Inventory, Price, StandInventory } from './inventory';
 
+export { default as TurnData } from './turnData';
+
 // export interface StateParams {
 //     availableForSale?: AvailableForSale;
 //     inventory?: Inventory;

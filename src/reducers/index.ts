@@ -12,6 +12,24 @@ const root = (state: State = initialState, action: Action) => {
                 ...state,
                 inventory: {...state.inventory, [action.name]: amount},
                 money};
+        case ActionType.START_TURN:
+            return {
+                ...state,
+                turnData: {
+                    currentTick: 0,
+                    potentialSoldCount: 10,
+                    totalTicks: 100,
+                }
+            }
+        case ActionType.UPDATE_TURN:
+            const currentTick = Math.min(state.turnData.currentTick + action.ticks, state.turnData.totalTicks - 1);
+            return {
+                ...state,
+                turnData: {
+                    ...state.turnData,
+                    currentTick,
+                }
+            }
 
         default:
             // This can happen if redux sends the action (like at init)

@@ -19,8 +19,8 @@ const getRowData = (inventory: Inventory | StandInventory) =>
 export default (props: AllGridProps) => (
     <div className="ag-theme-balham"
         style={{
-            height: '500px',
-            width: '600px'
+            height: '300px',
+            width: '400px'
         }}>
         <AgGridReact
             columnDefs={[
