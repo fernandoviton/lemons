@@ -2,9 +2,9 @@ import { Action } from 'redux';
 
 export enum ActionType {
     BUY_ITEM = 'BUY_ITEM',
-    FINISH_TURN = 'FINISH_TURN', // END_DAY
-    START_TURN = 'START_TURN', // START_NEW_DAY (only works if day is ended)
-    UPDATE_TURN = 'UPDATE_TURN', // PASS_TIME
+    END_DAY = 'END_DAY',
+    NEXT_DAY = 'NEXT_DAY',
+    PASS_TIME = 'PASS_TIME',
 }
 
 // Note: Redux only supports plain objects, not classes for actions
@@ -22,31 +22,31 @@ export const buyItem = (name: string, amount: number, cost: number): BuyItem => 
     type: ActionType.BUY_ITEM,
 });
 
-export interface FinishTurn {
-    readonly type: ActionType.FINISH_TURN;
+export interface EndDay {
+    readonly type: ActionType.END_DAY;
 }
-export const finishTurn = (): FinishTurn => ({
-    type: ActionType.FINISH_TURN
+export const endDay = (): EndDay => ({
+    type: ActionType.END_DAY
 });
 
-export interface StartTurn {
-    readonly type: ActionType.START_TURN;
+export interface NextDay {
+    readonly type: ActionType.NEXT_DAY;
 }
-export const startTurn = (): StartTurn => ({
-    type: ActionType.START_TURN
+export const nextDay = (): NextDay => ({
+    type: ActionType.NEXT_DAY
 });
 
-export interface UpdateTurn {
+export interface PassTime {
     readonly ticks: number;
-    readonly type: ActionType.UPDATE_TURN;
+    readonly type: ActionType.PASS_TIME;
 }
-export const updateTurn = (ticks: number): UpdateTurn => ({
+export const passTime = (ticks: number): PassTime => ({
     ticks,
-    type: ActionType.UPDATE_TURN
+    type: ActionType.PASS_TIME
 });
 
 export type Action =
     BuyItem
-    | FinishTurn
-    | StartTurn
-    | UpdateTurn;
+    | EndDay
+    | NextDay
+    | PassTime;

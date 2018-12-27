@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { startTurn } from 'src/actions';
+import { nextDay } from 'src/actions';
 import Stand from '../components/stand';
 import { Dispatch, State } from '../store';
 
@@ -10,7 +10,7 @@ export const mapStateToProps = (state: State) => ({
 });
 
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
-    onStart: () => { dispatch(startTurn()) },
+    onStart: () => { dispatch(nextDay()) },
 });
 
 export default connect(

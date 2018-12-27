@@ -12,7 +12,7 @@ const root = (state: State = initialState, action: Action) => {
                 ...state,
                 inventory: {...state.inventory, [action.name]: amount},
                 money};
-        case ActionType.START_TURN:
+        case ActionType.NEXT_DAY:
             return {
                 ...state,
                 turnData: {
@@ -21,7 +21,7 @@ const root = (state: State = initialState, action: Action) => {
                     totalTicks: 100,
                 }
             }
-        case ActionType.UPDATE_TURN:
+        case ActionType.PASS_TIME:
             const currentTick = Math.min(state.turnData.currentTick + action.ticks, state.turnData.totalTicks - 1);
             return {
                 ...state,
