@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Inventory, TurnData } from "../store";
+import { Day, Inventory } from "../store";
 import AllGrid from './allGrid';
 
 export interface StandProps {
     inventory: Inventory,
-    turnData: TurnData,
+    day: Day,
 
     onStart: () => void,
 }
@@ -14,9 +14,9 @@ export interface StandProps {
 export default (props: StandProps) => (
     <div>
         <button onClick={() => props.onStart()}>Start</button>
-        { props.turnData && <AllGrid
+        { props.day && <AllGrid
             inventory={props.inventory}
-            turnData={props.turnData}
+            day={props.day}
         />}
     </div>
     );

@@ -4,14 +4,14 @@ import { AgGridReact } from 'ag-grid-react';
 
 import 'ag-grid/dist/styles/ag-grid.css';
 import 'ag-grid/dist/styles/ag-theme-balham.css';
-import { Inventory, TurnData } from '../store';
+import { Day, Inventory } from '../store';
 
 export interface AllGridProps {
     inventory: Inventory;
-    turnData: TurnData;
+    day: Day;
 }
 
-// const getRowData = (inventory: Inventory | TurnData) =>
+// const getRowData = (inventory: Inventory | Day) =>
 //     inventory
 //     ? (Object as any).entries(inventory).map(([name, quantity]: [string, number]) => (
 //         {'name': name, 'quantity': quantity}))
@@ -32,9 +32,9 @@ export default (props: AllGridProps) => (
                 {name: 'Cups', quantity: props.inventory.cups},
                 {name: 'Lemons', quantity: props.inventory.lemons},
                 {name: 'Sugar (lbs)', quantity: props.inventory.poundsOfSugar},
-                {name: 'Lemonade Pitchers', quantity: props.turnData.lemonadePitchers},
-                {name: 'Lemonade Sold', quantity: props.turnData.actualSoldCount || 0},
-                {name: 'Current Time', quantity: props.turnData.currentTick},
+                {name: 'Lemonade Pitchers', quantity: props.day.lemonadePitchers},
+                {name: 'Lemonade Sold', quantity: props.day.actualSoldCount || 0},
+                {name: 'Current Time', quantity: props.day.currentTick},
             ]}
             />
     </div>

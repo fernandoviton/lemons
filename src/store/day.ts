@@ -1,4 +1,4 @@
-export default interface TurnData {
+export default interface Day {
     readonly actualSoldCount: number;
     readonly currentTick: number;
     readonly lemonadePitchers: number;
@@ -6,5 +6,5 @@ export default interface TurnData {
     readonly totalTicks: number;
 }
 
-export const isTurnEnded = (turnData: TurnData) =>
-    !turnData || turnData.currentTick >= turnData.totalTicks - 1;
+export const isTurnEnded = (day: Day) =>
+    !day || day.currentTick >= day.totalTicks - 1;

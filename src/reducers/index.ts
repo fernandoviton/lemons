@@ -1,6 +1,6 @@
 import { Action, ActionType } from '../actions';
 import { State } from '../store';
-import TurnData, { isTurnEnded } from '../store/turnData';
+import Day, { isTurnEnded } from '../store/day';
 import initialState from './initialState';
 
 const root = (state: State = initialState, action: Action) => {
@@ -14,25 +14,25 @@ const root = (state: State = initialState, action: Action) => {
                 inventory: {...state.inventory, [action.name]: amount},
                 money};
         case ActionType.NEXT_DAY:
-            if (!isTurnEnded(state.turnData)) {
+            if (!isTurnEnded(state.day)) {
                 return state;
             }
             return {
                 ...state,
-                turnData: {
+                day: {
                     actualSoldCount: 0,
                     currentTick: 0,
                     lemonadePitchers: 0,
                     potentialSoldCount: 10,
                     totalTicks: 100,
-                } as TurnData
+                } as Day
             }
         case ActionType.PASS_TIME:
-            const currentTick = Math.min(state.turnData.currentTick + action.ticks, state.turnData.totalTicks - 1);
+            const currentTick = Math.min(state.day.currentTick + action.ticks, state.day.totalTicks - 1);
             return {
                 ...state,
-                turnData: {
-                    ...state.turnData,
+                day: {
+                    ...state.day,
                     currentTick,
                 }
             }

@@ -2,7 +2,7 @@ import { Action } from '../actions';
 
 export { AvailableForSale, Inventory, Price } from './inventory';
 
-export { default as TurnData } from './turnData';
+export { default as Day } from './day';
 
 // export interface StateParams {
 //     availableForSale?: AvailableForSale;

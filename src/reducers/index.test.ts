@@ -1,5 +1,5 @@
 import { buyItem, nextDay, passTime } from '../actions';
-import TurnData, { isTurnEnded } from '../store/turnData';
+import Day, { isTurnEnded } from '../store/day';
 import reducer from './';
 import defaultState from './initialState';
 
@@ -13,65 +13,65 @@ describe('BuyItem', () => {
             .toEqual(defaultState.money - .5));
 });
 
-const stateWithTurnData = {...defaultState, turnData: {
+const stateWithDay = {...defaultState, day: {
     currentTick: 0,
     potentialSoldCount: 10,
     totalTicks: 5,
 }};
 
 describe('NextDay', () => {
-    const checkTurnDataForNewDay = (turnData: TurnData) => {
-        expect(turnData.actualSoldCount).toBe(0);
-        expect(turnData.currentTick).toBe(0);
-        expect(turnData.lemonadePitchers).toBe(0);
-        expect(turnData.potentialSoldCount).toBeGreaterThan(0);
-        expect(turnData.totalTicks).toBeGreaterThan(0);
+    const checkDayForNewDay = (day: Day) => {
+        expect(day.actualSoldCount).toBe(0);
+        expect(day.currentTick).toBe(0);
+        expect(day.lemonadePitchers).toBe(0);
+        expect(day.potentialSoldCount).toBeGreaterThan(0);
+        expect(day.totalTicks).toBeGreaterThan(0);
     }
     const stateAtDayEnd = {
-        ...stateWithTurnData,
-        turnData: {
-            ...stateWithTurnData.turnData,
+        ...stateWithDay,
+        day: {
+            ...stateWithDay.day,
             currentTick: 4,
             totalTicks: 5,
         }
     };
     const stateDuringDay = {
-        ...stateWithTurnData,
-        turnData: {
-            ...stateWithTurnData.turnData,
+        ...stateWithDay,
+        day: {
+            ...stateWithDay.day,
             currentTick: 3,
             totalTicks: 5,
         }
     };
 
-    it ('when first starting out, sets turnData', () =>
-        checkTurnDataForNewDay(reducer(defaultState, nextDay()).turnData))
+    it ('when first starting out, sets day', () =>
+        checkDayForNewDay(reducer(defaultState, nextDay()).day))
 
-    it ('when at end of day, resets turnData', () =>
-        checkTurnDataForNewDay(reducer(stateAtDayEnd, nextDay()).turnData))
+    it ('when at end of day, resets day', () =>
+        checkDayForNewDay(reducer(stateAtDayEnd, nextDay()).day))
 
-    it ('when not at end of day, doesnt change turnData', () =>
-        expect(reducer(stateDuringDay, nextDay()).turnData).toEqual(stateDuringDay.turnData))
+    it ('when not at end of day, doesnt change day', () =>
+        expect(reducer(stateDuringDay, nextDay()).day).toEqual(stateDuringDay.day))
 });
 
 describe('PassTime', () => {
     describe('ticks', () => {
         it ('with 1 tick increments currentTick by 1', () =>
-            expect(reducer(stateWithTurnData, passTime(1)).turnData.currentTick)
-                .toBe(stateWithTurnData.turnData.currentTick + 1))
+            expect(reducer(stateWithDay, passTime(1)).day.currentTick)
+                .toBe(stateWithDay.day.currentTick + 1))
         it ('with 2 ticks increments currentTick by 2', () =>
-            expect(reducer(stateWithTurnData, passTime(2)).turnData.currentTick)
-                .toBe(stateWithTurnData.turnData.currentTick + 2))
+            expect(reducer(stateWithDay, passTime(2)).day.currentTick)
+                .toBe(stateWithDay.day.currentTick + 2))
         it ('current ticks doesnt go past to totalTicks - 1', () =>
-            expect(reducer(stateWithTurnData, passTime(stateWithTurnData.turnData.totalTicks)).turnData.currentTick)
-                .toBe(stateWithTurnData.turnData.totalTicks - 1))
+            expect(reducer(stateWithDay, passTime(stateWithDay.day.totalTicks)).day.currentTick)
+                .toBe(stateWithDay.day.totalTicks - 1))
         it ('isTurnEnded returns false only if currentTicks < totalTicks -1 ', () => {
-            const turnData = stateWithTurnData.turnData;
-            expect(isTurnEnded({...turnData, currentTick: 0, totalTicks: 5})).toBe(false);
-            expect(isTurnEnded({...turnData, currentTick: 3, totalTicks: 5})).toBe(false);
-            expect(isTurnEnded({...turnData, currentTick: 4, totalTicks: 5})).toBe(true);
-            expect(isTurnEnded({...turnData, currentTick: 5, totalTicks: 5})).toBe(true);
-            expect(isTurnEnded({...turnData, currentTick: 6, totalTicks: 5})).toBe(true);
+            const day = stateWithDay.day;
+            expect(isTurnEnded({...day, currentTick: 0, totalTicks: 5})).toBe(false);
+            expect(isTurnEnded({...day, currentTick: 3, totalTicks: 5})).toBe(false);
+            expect(isTurnEnded({...day, currentTick: 4, totalTicks: 5})).toBe(true);
+            expect(isTurnEnded({...day, currentTick: 5, totalTicks: 5})).toBe(true);
+            expect(isTurnEnded({...day, currentTick: 6, totalTicks: 5})).toBe(true);
         });
     });
 });

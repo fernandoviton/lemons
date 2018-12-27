@@ -4,8 +4,8 @@ import Stand from '../components/stand';
 import { Dispatch, State } from '../store';
 
 export const mapStateToProps = (state: State) => ({
+    day: state.day,
     inventory: state.inventory,
-    turnData: state.turnData,
 });
 
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
