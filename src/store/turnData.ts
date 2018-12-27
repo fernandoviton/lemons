@@ -1,10 +1,9 @@
 export default interface TurnData {
+    readonly actualSoldCount: number;
     readonly currentTick: number;
     readonly potentialSoldCount: number;
     readonly totalTicks: number;
-
-    readonly actualSoldCount?: number;
 }
 
 export const isTurnEnded = (turnData: TurnData) =>
-    turnData.currentTick >= turnData.totalTicks - 1;
+    !turnData || turnData.currentTick >= turnData.totalTicks - 1;
