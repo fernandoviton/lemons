@@ -21,10 +21,11 @@ const stateWithTurnData = {...defaultState, turnData: {
 
 describe('NextDay', () => {
     const checkTurnDataForNewDay = (turnData: TurnData) => {
-        expect(turnData.currentTick).toBe(0);
-        expect(turnData.totalTicks).toBeGreaterThan(0);
-        expect(turnData.potentialSoldCount).toBeGreaterThan(0);
         expect(turnData.actualSoldCount).toBe(0);
+        expect(turnData.currentTick).toBe(0);
+        expect(turnData.lemonadePitchers).toBe(0);
+        expect(turnData.potentialSoldCount).toBeGreaterThan(0);
+        expect(turnData.totalTicks).toBeGreaterThan(0);
     }
     const stateAtDayEnd = {
         ...stateWithTurnData,

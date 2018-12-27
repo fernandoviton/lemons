@@ -22,8 +22,4 @@ export default {
         lemons: 0,
         poundsOfSugar: 0,
     },
-
-    standInventory: {
-        lemonadePitchers: 0.0,
-    },
 } as State;

@@ -5,7 +5,6 @@ import { Dispatch, State } from '../store';
 
 export const mapStateToProps = (state: State) => ({
     inventory: state.inventory,
-    standInventory: state.standInventory,
     turnData: state.turnData,
 });
 

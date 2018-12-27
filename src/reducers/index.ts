@@ -22,6 +22,7 @@ const root = (state: State = initialState, action: Action) => {
                 turnData: {
                     actualSoldCount: 0,
                     currentTick: 0,
+                    lemonadePitchers: 0,
                     potentialSoldCount: 10,
                     totalTicks: 100,
                 } as TurnData

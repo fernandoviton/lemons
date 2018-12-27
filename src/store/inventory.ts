@@ -12,7 +12,3 @@ export interface Inventory {
     lemons: number;
     poundsOfSugar: number;
 }
-
-export interface StandInventory {
-    lemonadePitchers: number;
-}
