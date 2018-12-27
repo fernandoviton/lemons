@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { Inventory, StandInventory } from "../store";
+import { Inventory, StandInventory, TurnData } from "../store";
 import AllGrid from './allGrid';
 
 export interface StandProps {
     inventory: Inventory,
     standInventory: StandInventory,
+    turnData: TurnData,
+
+    onStart: () => void,
 }
 
 // tslint:disable:jsx-no-lambda
@@ -16,5 +19,12 @@ export interface StandProps {
 // }) };
 
 export default (props: StandProps) => (
-    <AllGrid inventory={props.inventory} standInventory={props.standInventory}/>
-);
+    <div>
+        <button onClick={() => props.onStart()}>Start</button>
+        { props.turnData && <AllGrid
+            inventory={props.inventory}
+            standInventory={props.standInventory}
+            turnData={props.turnData}
+        />}
+    </div>
+    );

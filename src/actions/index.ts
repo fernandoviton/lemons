@@ -2,9 +2,9 @@ import { Action } from 'redux';
 
 export enum ActionType {
     BUY_ITEM = 'BUY_ITEM',
-    FINISH_TURN = 'FINISH_TURN',
-    START_TURN = 'START_TURN',
-    UPDATE_TURN = 'UPDATE_TURN',
+    FINISH_TURN = 'FINISH_TURN', // END_DAY
+    START_TURN = 'START_TURN', // START_NEW_DAY (only works if day is ended)
+    UPDATE_TURN = 'UPDATE_TURN', // PASS_TIME
 }
 
 // Note: Redux only supports plain objects, not classes for actions
