@@ -1,6 +1,6 @@
 import { Action, ActionType } from '../actions';
 import { State } from '../store';
-import Day, { isTurnEnded } from '../store/day';
+import Day, { hasDayEnded } from '../store/day';
 import initialState from './initialState';
 
 const root = (state: State = initialState, action: Action) => {
@@ -14,7 +14,7 @@ const root = (state: State = initialState, action: Action) => {
                 inventory: {...state.inventory, [action.name]: amount},
                 money};
         case ActionType.NEXT_DAY:
-            if (!isTurnEnded(state.day)) {
+            if (!hasDayEnded(state.day)) {
                 return state;
             }
             return {

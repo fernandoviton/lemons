@@ -1,5 +1,5 @@
 import { buyItem, nextDay, passTime } from '../actions';
-import Day, { isTurnEnded } from '../store/day';
+import Day, { hasDayEnded } from '../store/day';
 import reducer from './';
 import defaultState from './initialState';
 
@@ -65,13 +65,13 @@ describe('PassTime', () => {
         it ('current ticks doesnt go past to totalTicks - 1', () =>
             expect(reducer(stateWithDay, passTime(stateWithDay.day.totalTicks)).day.currentTick)
                 .toBe(stateWithDay.day.totalTicks - 1))
-        it ('isTurnEnded returns false only if currentTicks < totalTicks -1 ', () => {
+        it ('hasDayEnded returns false only if currentTicks < totalTicks -1 ', () => {
             const day = stateWithDay.day;
-            expect(isTurnEnded({...day, currentTick: 0, totalTicks: 5})).toBe(false);
-            expect(isTurnEnded({...day, currentTick: 3, totalTicks: 5})).toBe(false);
-            expect(isTurnEnded({...day, currentTick: 4, totalTicks: 5})).toBe(true);
-            expect(isTurnEnded({...day, currentTick: 5, totalTicks: 5})).toBe(true);
-            expect(isTurnEnded({...day, currentTick: 6, totalTicks: 5})).toBe(true);
+            expect(hasDayEnded({...day, currentTick: 0, totalTicks: 5})).toBe(false);
+            expect(hasDayEnded({...day, currentTick: 3, totalTicks: 5})).toBe(false);
+            expect(hasDayEnded({...day, currentTick: 4, totalTicks: 5})).toBe(true);
+            expect(hasDayEnded({...day, currentTick: 5, totalTicks: 5})).toBe(true);
+            expect(hasDayEnded({...day, currentTick: 6, totalTicks: 5})).toBe(true);
         });
     });
 });

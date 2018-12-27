@@ -6,5 +6,5 @@ export default interface Day {
     readonly totalTicks: number;
 }
 
-export const isTurnEnded = (day: Day) =>
+export const hasDayEnded = (day: Day) =>
     !day || day.currentTick >= day.totalTicks - 1;
