@@ -5,8 +5,8 @@ export enum ActionType {
     END_DAY = 'END_DAY',
     NEXT_DAY = 'NEXT_DAY',
     PASS_TIME = 'PASS_TIME',
-    // START_TIME
-    // PAUSE_TIME
+    START_TIME = 'START_TIME',
+    PAUSE_TIME = 'PAUSE_TIME',
 }
 
 // Note: Redux only supports plain objects, not classes for actions
@@ -47,8 +47,24 @@ export const passTime = (ticks: number): PassTime => ({
     type: ActionType.PASS_TIME
 });
 
+export interface StartTime {
+    readonly type: ActionType.START_TIME;
+}
+export const startTime = (): StartTime => ({
+    type: ActionType.START_TIME
+});
+
+export interface PauseTime {
+    readonly type: ActionType.PAUSE_TIME;
+}
+export const pauseTime = (): PauseTime => ({
+    type: ActionType.PAUSE_TIME
+});
+
 export type Action =
     BuyItem
     | EndDay
     | NextDay
-    | PassTime;
+    | PassTime
+    | StartTime
+    | PauseTime;
