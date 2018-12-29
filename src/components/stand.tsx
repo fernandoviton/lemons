@@ -4,8 +4,9 @@ import AllGrid from './allGrid';
 
 export interface StandProps {
     currentTime: number,
-    inventory: Inventory,
     day: Day,
+    inventory: Inventory,
+    isTimerOn: boolean,
 
     onStart: () => void,
     onPause: () => void,
@@ -15,7 +16,8 @@ export interface StandProps {
 
 export default (props: StandProps) => (
     <div>
-        <button onClick={() => props.onStart()}>Start</button>
+        { !props.isTimerOn && <button onClick={() => props.onStart()}>Start</button> }
+        { props.isTimerOn && <button onClick={() => props.onPause()}>Pause</button> }
         { props.day && <AllGrid
             currentTime={props.currentTime}
             inventory={props.inventory}

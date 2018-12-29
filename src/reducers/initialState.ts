@@ -16,6 +16,7 @@ export default {
     },
 
     currentTime: 0,
+    isTimerOn: false,
 
     money: 4.25 * 2,
 

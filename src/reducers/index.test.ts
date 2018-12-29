@@ -1,4 +1,4 @@
-import { buyItem, nextDay, passTime } from '../actions';
+import { buyItem, nextDay, passTime, pauseTime, startTime } from '../actions';
 import { Day, hasDayEnded } from '../store';
 import reducer from './';
 import defaultState from './initialState';
@@ -49,15 +49,24 @@ describe('NextDay', () => {
 });
 
 describe('PassTime', () => {
-    describe('ticks', () => {
-        it ('with 1 tick increments currentTime by 1', () =>
-            expect(reducer(defaultState, passTime(1)).currentTime)
-                .toBe(defaultState.currentTime + 1))
-        it ('with 2 ticks increments currentTime by 2', () =>
-            expect(reducer(defaultState, passTime(2)).currentTime)
-                .toBe(defaultState.currentTime + 2))
-    });
+    it ('with 1 tick increments currentTime by 1', () =>
+        expect(reducer(defaultState, passTime(1)).currentTime)
+            .toBe(defaultState.currentTime + 1))
+    it ('with 2 ticks increments currentTime by 2', () =>
+        expect(reducer(defaultState, passTime(2)).currentTime)
+            .toBe(defaultState.currentTime + 2))
 });
+
+describe('StartTime', () => {
+    it ('sets isTimerOn to true', () =>
+        expect(reducer({...defaultState, isTimerOn: false}, startTime()).isTimerOn).toBe(true));
+});
+
+describe('PauseTime', () => {
+    it ('sets isTimerOn to false', () =>
+        expect(reducer({...defaultState, isTimerOn: true}, pauseTime()).isTimerOn).toBe(false));
+});
+
 
 describe('hasDayEnded', () => {
     it ('returns false if currentTime < day.endTime', () => {

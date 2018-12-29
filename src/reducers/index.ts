@@ -32,6 +32,16 @@ const root = (state: State = initialState, action: Action) => {
                 ...state,
                 currentTime: state.currentTime + action.ticks,
             }
+        case ActionType.START_TIME:
+            return {
+                ...state,
+                isTimerOn: true,
+            }
+        case ActionType.PAUSE_TIME:
+            return {
+                ...state,
+                isTimerOn: false,
+            }
         default:
             // This can happen if redux sends the action (like at init)
             return state;

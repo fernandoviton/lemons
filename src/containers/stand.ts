@@ -7,6 +7,7 @@ export const mapStateToProps = (state: State) => ({
     currentTime: state.currentTime,
     day: state.day,
     inventory: state.inventory,
+    isTimerOn: state.isTimerOn,
 });
 
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
