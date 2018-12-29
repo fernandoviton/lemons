@@ -1,5 +1,5 @@
 import { Action, ActionType, nextDay, passTime } from "../actions";
-import { hasDayEnded } from "../store/day";
+import { hasDayEnded } from "../store";
 import toMiddleware from "./toMiddleware";
 
 let activeTimer: NodeJS.Timer | undefined;
@@ -9,7 +9,7 @@ export const hasActiveTimer = (): boolean => activeTimer !== undefined;
 export const onTimeInterval = (state: any, dispatch: any) => {
     // tslint:disable-next-line:no-console
     console.debug('tick...');
-    if (hasDayEnded(state.day)) {
+    if (hasDayEnded(state)) {
         dispatch(nextDay());
     } else {
         dispatch(passTime(1));

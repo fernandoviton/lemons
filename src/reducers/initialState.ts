@@ -15,6 +15,8 @@ export default {
         ]),
     },
 
+    currentTime: 0,
+
     money: 4.25 * 2,
 
     inventory: {

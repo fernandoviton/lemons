@@ -1,5 +1,5 @@
 import { buyItem, nextDay, passTime } from '../actions';
-import Day, { hasDayEnded } from '../store/day';
+import { Day, hasDayEnded } from '../store';
 import reducer from './';
 import defaultState from './initialState';
 
@@ -14,7 +14,9 @@ describe('BuyItem', () => {
 });
 
 const stateWithDay = {...defaultState, day: {
+    actualSoldCount: 0,
     endTime: 5,
+    lemonadePitchers: 0,
     potentialSoldCount: 10,
     startTime: 0,
 }};
@@ -27,51 +29,48 @@ describe('NextDay', () => {
         expect(day.potentialSoldCount).toBeGreaterThan(0);
         expect(day.startTime).toBe(expectedStartTime);
     }
-    // const stateAtDayEnd = {
-    //     ...stateWithDay,
-    //     day: {
-    //         ...stateWithDay.day,
-    //         endTime: 5,
-    //         startTime: 0,
-    //     }
-    // };
-    // const stateDuringDay = {
-    //     ...stateWithDay,
-    //     day: {
-    //         ...stateWithDay.day,
-    //         currentTime: 3,
-    //         endTime: 5,
-    //     }
-    // };
+    const stateAtDayEnd = {
+        ...stateWithDay,
+        currentTime: stateWithDay.day.endTime,
+    };
+    const stateDuringDay = {
+        ...stateWithDay,
+        currentTime: stateWithDay.day.endTime - 1,
+    };
 
-    it ('when first starting out, sets day', () =>
-        checkDayForNewDay(reducer(defaultState, nextDay()).day, 0));
+    it ('when no current day, sets day using current time ', () =>
+        checkDayForNewDay(reducer(defaultState, nextDay()).day, defaultState.currentTime));
 
-    // it ('when at end of day, resets day', () =>
-    //     checkDayForNewDay(reducer(stateAtDayEnd, nextDay()).day))
+    it ('when at end of current day, sets new day using current time', () =>
+        checkDayForNewDay(reducer(stateAtDayEnd, nextDay()).day, defaultState.currentTime));
 
-    // it ('when not at end of day, doesnt change day', () =>
-    //     expect(reducer(stateDuringDay, nextDay()).day).toEqual(stateDuringDay.day))
+    it ('when in middle of day, doesnt change day', () =>
+        expect(reducer(stateDuringDay, nextDay()).day).toEqual(stateDuringDay.day))
 });
 
-// describe('PassTime', () => {
-//     describe('ticks', () => {
-//         it ('with 1 tick increments currentTime by 1', () =>
-//             expect(reducer(stateWithDay, passTime(1)).day.currentTime)
-//                 .toBe(stateWithDay.day.currentTime + 1))
-//         it ('with 2 ticks increments currentTime by 2', () =>
-//             expect(reducer(stateWithDay, passTime(2)).day.currentTime)
-//                 .toBe(stateWithDay.day.currentTime + 2))
-//         it ('current ticks doesnt go past to endTime - 1', () =>
-//             expect(reducer(stateWithDay, passTime(stateWithDay.day.endTime)).day.currentTime)
-//                 .toBe(stateWithDay.day.endTime - 1))
-//         it ('hasDayEnded returns false only if currentTime < endTime -1 ', () => {
-//             const day = stateWithDay.day;
-//             expect(hasDayEnded({...day, currentTime: 0, endTime: 5})).toBe(false);
-//             expect(hasDayEnded({...day, currentTime: 3, endTime: 5})).toBe(false);
-//             expect(hasDayEnded({...day, currentTime: 4, endTime: 5})).toBe(true);
-//             expect(hasDayEnded({...day, currentTime: 5, endTime: 5})).toBe(true);
-//             expect(hasDayEnded({...day, currentTime: 6, endTime: 5})).toBe(true);
-//         });
-//     });
-// });
+describe('PassTime', () => {
+    describe('ticks', () => {
+        it ('with 1 tick increments currentTime by 1', () =>
+            expect(reducer(defaultState, passTime(1)).currentTime)
+                .toBe(defaultState.currentTime + 1))
+        it ('with 2 ticks increments currentTime by 2', () =>
+            expect(reducer(defaultState, passTime(2)).currentTime)
+                .toBe(defaultState.currentTime + 2))
+    });
+});
+
+describe('hasDayEnded', () => {
+    it ('returns false if currentTime < day.endTime', () => {
+        expect(hasDayEnded({...stateWithDay, currentTime: 0})).toBe(false);
+        expect(hasDayEnded({...stateWithDay, currentTime: 1})).toBe(false);
+        expect(hasDayEnded({...stateWithDay, currentTime: 4})).toBe(false);
+    });
+
+    it ('returns true if currentTime >= day.endTime', () => {
+        expect(hasDayEnded({...stateWithDay, currentTime: 5})).toBe(true);
+        expect(hasDayEnded({...stateWithDay, currentTime: 6})).toBe(true);
+    });
+
+    it ('returns true if there is no day', () =>
+        expect(hasDayEnded({...stateWithDay, day: undefined})).toBe(true));
+});

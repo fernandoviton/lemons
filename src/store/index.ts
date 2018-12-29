@@ -23,3 +23,6 @@ export { default as Day } from './day';
 
 export type Dispatch = (action: Action) => Action;
 export type State = any;
+
+export const hasDayEnded = (state: State) =>
+    !state.day || state.currentTime >= state.day.endTime;

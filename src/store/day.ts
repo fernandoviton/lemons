@@ -5,6 +5,3 @@ export default interface Day {
     readonly potentialSoldCount: number;
     readonly startTime: number;
 }
-
-// export const hasDayEnded = (day: Day) =>
-//     !day || day.currentTime >= day.endTime - 1;
