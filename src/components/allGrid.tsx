@@ -34,7 +34,7 @@ export default (props: AllGridProps) => (
                 {name: 'Sugar (lbs)', quantity: props.inventory.poundsOfSugar},
                 {name: 'Lemonade Pitchers', quantity: props.day.lemonadePitchers},
                 {name: 'Lemonade Sold', quantity: props.day.actualSoldCount || 0},
-                {name: 'Current Time', quantity: props.day.currentTick},
+                {name: 'Start Time', quantity: props.day.startTime},
             ]}
             />
     </div>

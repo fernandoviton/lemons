@@ -14,28 +14,28 @@ const root = (state: State = initialState, action: Action) => {
                 inventory: {...state.inventory, [action.name]: amount},
                 money};
         case ActionType.NEXT_DAY:
-            if (!hasDayEnded(state.day)) {
-                return state;
-            }
+            // if (!hasDayEnded(state.day)) {
+            //     return state;
+            // }
             return {
                 ...state,
                 day: {
                     actualSoldCount: 0,
-                    currentTick: 0,
+                    endTime: 100,
                     lemonadePitchers: 0,
                     potentialSoldCount: 10,
-                    totalTicks: 100,
+                    startTime: 0,
                 } as Day
             }
-        case ActionType.PASS_TIME:
-            const currentTick = Math.min(state.day.currentTick + action.ticks, state.day.totalTicks - 1);
-            return {
-                ...state,
-                day: {
-                    ...state.day,
-                    currentTick,
-                }
-            }
+        // case ActionType.PASS_TIME:
+        //     const currentTime = Math.min(state.day.currentTime + action.ticks, state.day.endTime - 1);
+        //     return {
+        //         ...state,
+        //         day: {
+        //             ...state.day,
+        //             currentTime,
+        //         }
+        //     }
 
         default:
             // This can happen if redux sends the action (like at init)

@@ -1,10 +1,10 @@
 export default interface Day {
     readonly actualSoldCount: number;
-    readonly currentTick: number;
+    readonly endTime: number; // the time in which this day has ended
     readonly lemonadePitchers: number;
     readonly potentialSoldCount: number;
-    readonly totalTicks: number;
+    readonly startTime: number;
 }
 
-export const hasDayEnded = (day: Day) =>
-    !day || day.currentTick >= day.totalTicks - 1;
+// export const hasDayEnded = (day: Day) =>
+//     !day || day.currentTime >= day.endTime - 1;
