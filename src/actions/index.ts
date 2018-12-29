@@ -5,8 +5,8 @@ export enum ActionType {
     END_DAY = 'END_DAY',
     NEXT_DAY = 'NEXT_DAY',
     PASS_TIME = 'PASS_TIME',
-    START_TIME = 'START_TIME',
-    PAUSE_TIME = 'PAUSE_TIME',
+    START_TIME = 'START_TIME', // START_TIMER
+    PAUSE_TIME = 'PAUSE_TIME', // PAUSE_TIMER
 }
 
 // Note: Redux only supports plain objects, not classes for actions

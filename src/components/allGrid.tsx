@@ -7,8 +7,9 @@ import 'ag-grid/dist/styles/ag-theme-balham.css';
 import { Day, Inventory } from '../store';
 
 export interface AllGridProps {
-    inventory: Inventory;
+    currentTime: number;
     day: Day;
+    inventory: Inventory;
 }
 
 // const getRowData = (inventory: Inventory | Day) =>
@@ -29,12 +30,14 @@ export default (props: AllGridProps) => (
                 {headerName: 'Quantity', field: 'quantity'},
             ]}
             rowData={[
+                {name: 'Current Time', quantity: props.currentTime},
                 {name: 'Cups', quantity: props.inventory.cups},
                 {name: 'Lemons', quantity: props.inventory.lemons},
                 {name: 'Sugar (lbs)', quantity: props.inventory.poundsOfSugar},
                 {name: 'Lemonade Pitchers', quantity: props.day.lemonadePitchers},
                 {name: 'Lemonade Sold', quantity: props.day.actualSoldCount || 0},
-                {name: 'Start Time', quantity: props.day.startTime},
+                {name: 'Current Day Start Time', quantity: props.day.startTime},
+                {name: 'Current Day End Time', quantity: props.day.endTime},
             ]}
             />
     </div>
