@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { nextDay } from 'src/actions';
+import { startTime } from 'src/actions';
 import Stand from '../components/stand';
 import { Dispatch, State } from '../store';
 
@@ -9,7 +9,7 @@ export const mapStateToProps = (state: State) => ({
 });
 
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
-    onStart: () => { dispatch(nextDay()) },
+    onStart: () => { dispatch(startTime()) },
 });
 
 export default connect(
