@@ -15,8 +15,11 @@ export default {
         ]),
     },
 
-    currentTime: 0,
-    isTimerOn: false,
+    day: {
+        actualSoldCount: 0,
+        lemonadePitchers: 0,
+        potentialSoldCount: 0,
+    },
 
     money: 4.25 * 2,
 
@@ -25,4 +28,11 @@ export default {
         lemons: 0,
         poundsOfSugar: 0,
     },
+
+    config : {
+        dayLength: 100,
+    },
+
+    currentTime: 99,
+    isTimerOn: false,
 } as State;

@@ -1,14 +1,23 @@
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Day, Inventory } from "../store";
+import { Inventory } from "../store";
 
 import 'ag-grid/dist/styles/ag-grid.css';
 import 'ag-grid/dist/styles/ag-theme-balham.css';
 import './stand.css';
 
+export interface DayProps {
+    readonly actualSoldCount: number;
+    readonly dayNumber: number;
+    readonly endTime: number; // the time in which this day has ended
+    readonly lemonadePitchers: number;
+    readonly potentialSoldCount: number;
+    readonly startTime: number;
+}
+
 export interface StandProps {
     currentTime: number,
-    day: Day,
+    day: DayProps,
     inventory: Inventory,
     isTimerOn: boolean,
 

@@ -25,4 +25,4 @@ export type Dispatch = (action: Action) => Action;
 export type State = any;
 
 export const hasDayEnded = (state: State) =>
-    !state.day || state.currentTime >= state.day.endTime;
+    (state.currentTime % state.config.dayLength) === (state.config.dayLength - 1);

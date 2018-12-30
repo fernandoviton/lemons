@@ -3,7 +3,7 @@ import { Action } from 'redux';
 export enum ActionType {
     BUY_ITEM = 'BUY_ITEM',
     END_DAY = 'END_DAY',
-    NEXT_DAY = 'NEXT_DAY',
+    NEXT_DAY = 'NEXT_DAY', // TODO: Get rid of this - setup of day should happens as part of passtime
     PASS_TIME = 'PASS_TIME',
     START_TIME = 'START_TIME', // START_TIMER
     PAUSE_TIME = 'PAUSE_TIME', // PAUSE_TIMER

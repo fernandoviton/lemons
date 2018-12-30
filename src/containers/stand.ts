@@ -1,11 +1,19 @@
 import { connect } from 'react-redux';
 import { pauseTime, startTime } from 'src/actions';
-import Stand from '../components/stand';
+import Stand, { DayProps } from '../components/stand';
+import { createDaySelector } from '../selectors';
 import { Dispatch, State } from '../store';
+
+const daySelector = createDaySelector();
 
 export const mapStateToProps = (state: State) => ({
     currentTime: state.currentTime,
-    day: state.day,
+    day: {
+        ...daySelector(state),
+        actualSoldCount: state.day.actualSoldCount,
+        lemonadePitchers: state.day.lemonadePitchers,
+        potentialSoldCount: state.day.potentialSoldCount,
+    } as DayProps,
     inventory: state.inventory,
     isTimerOn: state.isTimerOn,
 });
