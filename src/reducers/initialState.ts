@@ -39,6 +39,7 @@ export default {
         poundsOfSugar: .5,
     } as Recipe,
 
-    currentTime: 99,
+    currentTime: 0,
     isTimerOn: false,
+    // hasDayEnded: true,
 } as State;

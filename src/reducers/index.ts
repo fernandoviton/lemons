@@ -3,11 +3,11 @@ import { Inventory, Recipe, State } from '../store';
 import { Day } from '../store/';
 import initialState from './initialState';
 
-const makeNewDay = () => ({
-    actualSoldCount: 0,
-    currentMadeCups: 0,
-    potentialSoldCount: 10,
-});
+// const makeNewDay = () => ({
+//     actualSoldCount: 0,
+//     currentMadeCups: 0,
+//     potentialSoldCount: 10,
+// });
 
 const tryMakeLemonade = (currentMadeCups: number, inventory: Inventory, recipe: Recipe) => {
     const poundsOfSugar = inventory.poundsOfSugar - recipe.poundsOfSugar;
