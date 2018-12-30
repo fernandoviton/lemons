@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import { State } from '../store';
+import { Recipe, State } from '../store';
 
 export default {
     availableForSale: {
@@ -17,7 +17,7 @@ export default {
 
     day: {
         actualSoldCount: 0,
-        lemonadePitchers: 0,
+        currentMadeCups: 0,
         potentialSoldCount: 0,
     },
 
@@ -32,6 +32,12 @@ export default {
     config : {
         dayLength: 100,
     },
+
+    recipe: {
+        lemons: 3,
+        makesInCups: 8,
+        poundsOfSugar: .5,
+    } as Recipe,
 
     currentTime: 99,
     isTimerOn: false,

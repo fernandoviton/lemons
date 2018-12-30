@@ -1,5 +1,4 @@
 import { buyItem, passTime, pauseTime, startTime } from '../actions';
-import { hasDayEnded } from '../store';
 import reducer from './';
 import defaultState from './initialState';
 
@@ -16,7 +15,7 @@ describe('BuyItem', () => {
 // describe('NextDay', () => {
 //     const checkDayForNewDay = (day: Day) => {
 //         expect(day.actualSoldCount).toBe(0);
-//         expect(day.lemonadePitchers).toBe(0);
+//         expect(day.currentMadeCups).toBe(0);
 //         expect(day.potentialSoldCount).toBeGreaterThan(0);
 //     }
 //     const stateAtDayEnd = {
@@ -39,46 +38,89 @@ describe('BuyItem', () => {
 // });
 
 describe('PassTime', () => {
+    const stateAtDayEnd = {
+        ...defaultState,
+        currentTime: defaultState.config.dayLength,
+        day: {
+            ...defaultState.day,
+            actualSoldCount: 50,
+            potentialSoldCount: 100,
+        },
+        hasDayEnded: true,
+    };
+    const stateDuringDay = {
+        ...stateAtDayEnd,
+        hasDayEnded: false
+    };
+
     describe('currentTime', () => {
         it ('with 1 tick increments by 1', () =>
-            expect(reducer(defaultState, passTime(1)).currentTime)
-                .toBe(defaultState.currentTime + 1))
+            expect(reducer(stateDuringDay, passTime(1)).currentTime)
+                .toBe(stateDuringDay.currentTime + 1))
         it ('with >1 ticks is not implemented', () =>
-            expect(() => reducer(defaultState, passTime(2)).currentTime)
+            expect(() => reducer(stateDuringDay, passTime(2)).currentTime)
                 .toThrow())
         it ('with <1 ticks is not valid', () =>
-            expect(() => reducer(defaultState, passTime(0)).currentTime)
+            expect(() => reducer(stateDuringDay, passTime(0)).currentTime)
                 .toThrow())
-    }),
-    describe('day', () => {
-        const stateEndOfDay = {
-            ...defaultState,
-            config: {
-                ...defaultState.config,
-                dayLength: 10,
-            },
-            currentTime: 9,
-            day: {
-                ...defaultState.day,
-                actualSoldCount: 50,
-                potentialSoldCount: 100,
-            },
-        };
-        const stateDuringDay = {
-            ...stateEndOfDay,
-            currentTime: 5,
-            day: {
-                ...defaultState.day,
-                actualSoldCount: 10,
-                potentialSoldCount: 100,
-            },
-        };
-        it ('when currentTime is within a day, no change to day data ', () => {
-            expect(reducer(stateDuringDay, passTime(1)).day).toEqual(stateDuringDay.day);
+        it ('when hasDayEnded, currentTime doesnt change', () => {
+            expect(reducer(stateAtDayEnd, passTime(1)).currentTime).toBe(stateAtDayEnd.currentTime);
         });
-        it ('when currentTime goes to start of a new day, day is reset', () => {
-            expect(reducer(stateEndOfDay, passTime(1)).day.actualSoldCount).toBe(0);
-            expect(reducer(stateEndOfDay, passTime(1)).day.lemonadePitchers).toBe(0);
+    }),
+    describe('hasDayEnded', () => {
+        const expectPassTime = (currentTime: number) =>
+            expect(reducer({...defaultState, currentTime}, passTime(1)).hasDayEnded);
+
+        it ('if currentTime moves to new day, hasDayEnded gets set to true', () => {
+            expectPassTime(defaultState.config.dayLength - 1).toBe(true);
+            expectPassTime((defaultState.config.dayLength * 2) - 1).toBe(true);
+        });
+
+        it ('returns false otherwse', () => {
+            expectPassTime(0).toBe(false);
+            expectPassTime(defaultState.config.dayLength).toBe(false);
+            expectPassTime(defaultState.config.dayLength + 1).toBe(false);
+            expectPassTime(defaultState.config.dayLength * 2).toBe(false);
+        });
+    }),
+    describe('currentMadeCups', () => {
+        const inventory = {...stateDuringDay.inventory, lemons: 100, poundsOfSugar: 100};
+        describe('when not at end of day', () => {
+            describe('with no cups made', () => {
+                const state = {...stateDuringDay, day: {...stateDuringDay.day, currentMadeCups: 0}};
+
+                it ('when has ingredients, makes cups', () =>
+                    expect(reducer({...state, inventory}, passTime(1)).day.currentMadeCups)
+                        .toBe(state.recipe.makesInCups));
+                it ('with not enough ingredients, doesnt make cups', () => {
+                    const inventoryNoLemons = {...inventory, lemons: 0};
+                    const inventoryLowLemons = {...inventory, lemons: state.recipe.lemons - 1};
+                    const inventoryNoSugar = {...inventory, poundsOfSugar: 0};
+                    const inventoryLowSugar = {...inventory, poundsOfSugar: state.recipe.poundsOfSugar - .1};
+                    expect(reducer({...state, inventory: inventoryNoLemons}, passTime(1)).day.currentMadeCups)
+                        .toBe(state.day.currentMadeCups);
+                    expect(reducer({...state, inventory: inventoryLowLemons}, passTime(1)).day.currentMadeCups)
+                        .toBe(state.day.currentMadeCups);
+                    expect(reducer({...state, inventory: inventoryNoSugar}, passTime(1)).day.currentMadeCups)
+                        .toBe(state.day.currentMadeCups);
+                    expect(reducer({...state, inventory: inventoryLowSugar}, passTime(1)).day.currentMadeCups)
+                        .toBe(state.day.currentMadeCups);
+                });
+            });
+
+            it('with cups made and ingredients, doesnt make more cups', () => {
+                const state = {...stateDuringDay, day: {...stateDuringDay.day, currentMadeCups: 1}};
+                expect(reducer({...state, inventory}, passTime(1)).day.currentMadeCups)
+                    .toBe(state.day.currentMadeCups);
+            });
+        });
+        it('when at end of day, doesnt make cups', () => {
+            const state = {
+                ...stateAtDayEnd,
+                inventory,
+            };
+            expect(reducer(state, passTime(1)).day.currentMadeCups)
+                .toBe(state.day.currentMadeCups);
         });
     });
 });
@@ -93,16 +135,3 @@ describe('PauseTime', () => {
         expect(reducer({...defaultState, isTimerOn: true}, pauseTime()).isTimerOn).toBe(false));
 });
 
-describe('hasDayEnded', () => {
-    it ('returns true if currentTime is 1 less than a dayLength multiple', () => {
-        expect(hasDayEnded({...defaultState, currentTime: defaultState.config.dayLength - 1})).toBe(true);
-        expect(hasDayEnded({...defaultState, currentTime: (defaultState.config.dayLength * 2) - 1})).toBe(true);
-    });
-
-    it ('returns false otherwse', () => {
-        expect(hasDayEnded({...defaultState, currentTime: 0})).toBe(false);
-        expect(hasDayEnded({...defaultState, currentTime: defaultState.config.dayLength})).toBe(false);
-        expect(hasDayEnded({...defaultState, currentTime: defaultState.config.dayLength + 1})).toBe(false);
-        expect(hasDayEnded({...defaultState, currentTime: defaultState.config.dayLength * 2})).toBe(false);
-    });
-});

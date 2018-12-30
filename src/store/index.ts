@@ -4,6 +4,8 @@ export { AvailableForSale, Inventory, Price } from './inventory';
 
 export { default as Day } from './day';
 
+export { Recipe } from './recipe';
+
 // export interface StateParams {
 //     availableForSale?: AvailableForSale;
 //     inventory?: Inventory;
@@ -23,6 +25,3 @@ export { default as Day } from './day';
 
 export type Dispatch = (action: Action) => Action;
 export type State = any;
-
-export const hasDayEnded = (state: State) =>
-    (state.currentTime % state.config.dayLength) === (state.config.dayLength - 1);

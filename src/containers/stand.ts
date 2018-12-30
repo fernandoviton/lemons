@@ -11,7 +11,7 @@ export const mapStateToProps = (state: State) => ({
     day: {
         ...daySelector(state),
         actualSoldCount: state.day.actualSoldCount,
-        lemonadePitchers: state.day.lemonadePitchers,
+        currentMadeCups: state.day.currentMadeCups,
         potentialSoldCount: state.day.potentialSoldCount,
     } as DayProps,
     inventory: state.inventory,

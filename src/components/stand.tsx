@@ -10,7 +10,7 @@ export interface DayProps {
     readonly actualSoldCount: number;
     readonly dayNumber: number;
     readonly endTime: number; // the time in which this day has ended
-    readonly lemonadePitchers: number;
+    readonly currentMadeCups: number;
     readonly potentialSoldCount: number;
     readonly startTime: number;
 }
@@ -41,7 +41,7 @@ const makeGrid = (props: StandProps) => (
                 {name: 'Cups', quantity: props.inventory.cups},
                 {name: 'Lemons', quantity: props.inventory.lemons},
                 {name: 'Sugar (lbs)', quantity: props.inventory.poundsOfSugar},
-                {name: 'Lemonade Pitchers', quantity: props.day.lemonadePitchers},
+                {name: 'Cups of Lemonade', quantity: props.day.currentMadeCups},
                 {name: 'Lemonade Sold', quantity: props.day.actualSoldCount || 0},
             ]}
             />

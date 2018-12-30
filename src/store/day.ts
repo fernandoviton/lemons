@@ -1,5 +1,5 @@
 export default interface Day {
     readonly actualSoldCount: number;
-    readonly lemonadePitchers: number;
+    readonly currentMadeCups: number;
     readonly potentialSoldCount: number;
 }

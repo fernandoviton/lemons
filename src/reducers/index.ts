@@ -1,12 +1,42 @@
 import { Action, ActionType } from '../actions';
-import { State } from '../store';
-import { Day, hasDayEnded } from '../store/';
+import { Inventory, Recipe, State } from '../store';
+import { Day } from '../store/';
 import initialState from './initialState';
 
 const makeNewDay = () => ({
     actualSoldCount: 0,
-    lemonadePitchers: 0,
+    currentMadeCups: 0,
     potentialSoldCount: 10,
+});
+
+const tryMakeLemonade = (currentMadeCups: number, inventory: Inventory, recipe: Recipe) => {
+    const poundsOfSugar = inventory.poundsOfSugar - recipe.poundsOfSugar;
+    const lemons = inventory.lemons - recipe.lemons;
+
+    return (currentMadeCups > 0 || poundsOfSugar < 0 || lemons < 0)
+        ? {inventory, cupsMade: 0}
+        : {inventory: {...inventory, lemons, poundsOfSugar}, cupsMade: recipe.makesInCups};
+};
+
+// const updateDay = (state: State) => {
+//     if (state.day.currentMadeCups === 0) {
+//         const { cupsMade, inventory } = tryMakeLemonade(state.inventory, state.recipe);
+//         return (cupsMade === 0)
+//             ? state
+//             : {
+//                 ...state,
+//                 day: {...state.day, currentMadeCups: state.day.currentMadeCups + cupsMade},
+//                 inventory,
+//             };
+//     }
+//     else {
+//         return state;
+//     }
+// };
+
+const updateDay = (day: Day, cupsMade: number) => ({
+    ...day,
+    currentMadeCups: day.currentMadeCups + cupsMade,
 })
 
 const root = (state: State = initialState, action: Action) => {
@@ -20,14 +50,14 @@ const root = (state: State = initialState, action: Action) => {
                 inventory: {...state.inventory, [action.name]: amount},
                 money};
         case ActionType.NEXT_DAY:
-            if (!hasDayEnded(state)) {
+            if (!state.hasDayEnded) {
                 return state;
             }
             return {
                 ...state,
                 day: {
                     actualSoldCount: 0,
-                    lemonadePitchers: 0,
+                    currentMadeCups: 0,
                     potentialSoldCount: 10,
                 } as Day
             }
@@ -38,12 +68,20 @@ const root = (state: State = initialState, action: Action) => {
             if (action.ticks > 1) {
                 throw new Error('>1 time to passTime is NYI');
             }
+
+            if (state.hasDayEnded) {
+                return state;
+            }
+
+            const { cupsMade, inventory } =
+                tryMakeLemonade(state.day.currentMadeCups, state.inventory, state.recipe);
+
             return {
                 ...state,
                 currentTime: state.currentTime + action.ticks,
-                day: hasDayEnded(state)
-                    ? makeNewDay()
-                    : state.day,
+                day: updateDay(state.day, cupsMade),
+                hasDayEnded: (state.currentTime % state.config.dayLength) === (state.config.dayLength - 1),
+                inventory,
             }
         case ActionType.START_TIME:
             return {
