@@ -1,4 +1,4 @@
-import { buyItem, passTime, pauseTime, startTime } from '../actions';
+import { buyItem, nextDay, passTime, pauseTime, startTime } from '../actions';
 import reducer from './';
 import defaultState from './initialState';
 
@@ -12,30 +12,28 @@ describe('BuyItem', () => {
             .toEqual(defaultState.money - .5));
 });
 
-// describe('NextDay', () => {
-//     const checkDayForNewDay = (day: Day) => {
-//         expect(day.actualSoldCount).toBe(0);
-//         expect(day.currentMadeCups).toBe(0);
-//         expect(day.potentialSoldCount).toBeGreaterThan(0);
-//     }
-//     const stateAtDayEnd = {
-//         ...defaultState,
-//         currentTime: defaultState.config.dayLength - 1,
-//     };
-//     const stateDuringDay = {
-//         ...defaultState,
-//         currentTime: defaultState.config.dayLength + 1,
-//     };
+describe('NextDay', () => {
+    const stateAtDayEnd = {
+        ...defaultState,
+        currentTime: defaultState.config.dayLength,
+        hasDayEnded: true,
+    };
+    const stateDuringDay = {
+        ...stateAtDayEnd,
+        hasDayEnded: false
+    };
 
-//     it ('when no current day, sets day', () =>
-//         checkDayForNewDay(reducer(defaultState, nextDay()).day));
-
-//     it ('when at end of current day, resets new day using current time', () =>
-//         checkDayForNewDay(reducer(stateAtDayEnd, nextDay()).day));
-
-//     it ('when in middle of day, doesnt change day', () =>
-//         expect(reducer(stateDuringDay, nextDay()).day).toEqual(stateDuringDay.day))
-// });
+    it ('when not at end of day does nothing', () =>
+        expect(reducer(stateDuringDay, nextDay())).toBe(stateDuringDay));
+    it ('when at end of day sets hasDayEnded to false', () =>
+        expect(reducer(stateAtDayEnd, nextDay()).hasDayEnded).toBe(false));
+    it ('when at end of day resets day', () => {
+        const day = reducer(stateAtDayEnd, nextDay()).day;
+        expect(day.actualSoldCount).toBe(0);
+        expect(day.currentMadeCups).toBe(0);
+        expect(day.chanceToSell).toBeGreaterThanOrEqual(0);
+    });
+});
 
 describe('PassTime', () => {
     const stateAtDayEnd = {

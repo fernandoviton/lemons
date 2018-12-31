@@ -83,7 +83,8 @@ const root = (state: State = initialState, action: Action) => {
                     actualSoldCount: 0,
                     chanceToSell: 1,
                     currentMadeCups: 0,
-                } as Day
+                } as Day,
+                hasDayEnded: false,
             }
         case ActionType.PASS_TIME:
             if (action.ticks < 1) {
