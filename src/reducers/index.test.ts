@@ -44,7 +44,7 @@ describe('PassTime', () => {
         day: {
             ...defaultState.day,
             actualSoldCount: 50,
-            potentialSoldCount: 100,
+            chanceToSell: 0,
         },
         hasDayEnded: true,
     };
@@ -123,6 +123,36 @@ describe('PassTime', () => {
                 .toBe(state.day.currentMadeCups);
         });
     });
+    describe('Sold', () => {
+        const stateWithMadeLemonade = {
+            ...stateDuringDay,
+            day: {
+                ...stateDuringDay.day,
+                chanceToSell: 1.0,
+                currentMadeCups: 100,
+            }
+        };
+        const stateWithMadeLemonadeAtEndOfDay = {
+            ...stateDuringDay,
+            hasDayEnded: true
+        };
+
+        it ('when chance to sell is 1 and have made lemonade and not end of day, will sell one', () =>
+            expect(reducer(stateWithMadeLemonade, passTime(1)).day.actualSoldCount)
+                .toBe(stateWithMadeLemonade.day.actualSoldCount + 1));
+        it ('when chance to sell is 1 and have made lemonade and end of day, wont sell', () =>
+            expect(reducer(stateWithMadeLemonadeAtEndOfDay, passTime(1)).day.actualSoldCount)
+                .toBe(stateWithMadeLemonade.day.actualSoldCount));
+        it ('when chance to sell is 1 and no made lemonade (and missing ingredients), wont sell', () => {
+            const state = {
+                ...stateWithMadeLemonade,
+                day: {...stateWithMadeLemonade.day, currentMadeCups: 0},
+                inventory: {...stateWithMadeLemonade.inventory, lemons: 0},
+            };
+            expect(reducer(state, passTime(1)).day.actualSoldCount)
+                .toBe(stateWithMadeLemonade.day.actualSoldCount)
+            });
+        });
 });
 
 describe('StartTime', () => {

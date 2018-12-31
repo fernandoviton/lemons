@@ -1,5 +1,5 @@
 import { Action, ActionType } from '../actions';
-import { Inventory, Recipe, State } from '../store';
+import { State } from '../store';
 import { Day } from '../store/';
 import initialState from './initialState';
 
@@ -9,13 +9,42 @@ import initialState from './initialState';
 //     potentialSoldCount: 10,
 // });
 
-const tryMakeLemonade = (currentMadeCups: number, inventory: Inventory, recipe: Recipe) => {
-    const poundsOfSugar = inventory.poundsOfSugar - recipe.poundsOfSugar;
-    const lemons = inventory.lemons - recipe.lemons;
+// const tryMakeLemonade = (currentMadeCups: number, inventory: Inventory, recipe: Recipe) => {
+//     const poundsOfSugar = inventory.poundsOfSugar - recipe.poundsOfSugar;
+//     const lemons = inventory.lemons - recipe.lemons;
 
-    return (currentMadeCups > 0 || poundsOfSugar < 0 || lemons < 0)
-        ? {inventory, cupsMade: 0}
-        : {inventory: {...inventory, lemons, poundsOfSugar}, cupsMade: recipe.makesInCups};
+//     return (currentMadeCups > 0 || poundsOfSugar < 0 || lemons < 0)
+//         ? {inventory, cupsMade: 0}
+//         : {inventory: {...inventory, lemons, poundsOfSugar}, cupsMade: recipe.makesInCups};
+// };
+
+const updateDay = (day: Day, currentMadeCupsDelta?: number, soldCountDelta?: number) => ({
+    ...day,
+    actualSoldCount: day.actualSoldCount + (soldCountDelta || 0),
+    currentMadeCups: day.currentMadeCups + (currentMadeCupsDelta || 0),
+})
+
+const trySell = (state: State) =>
+    state.day.currentMadeCups > 0 && state.day.chanceToSell === 1.0
+        ? {...state, day: updateDay(state.day, -1, 1)}
+        : state;
+
+const tryMakeLemonade = (state: State) => {
+    if (state.day.currentMadeCups > 0) {
+        return state;
+    }
+
+    const poundsOfSugar = state.inventory.poundsOfSugar - state.recipe.poundsOfSugar;
+    const lemons = state.inventory.lemons - state.recipe.lemons;
+
+    if (poundsOfSugar < 0 || lemons < 0) {
+        return state;
+    };
+
+    const inventory = {...state.inventory, lemons, poundsOfSugar};
+    const day = {...state.day, currentMadeCups: state.day.currentMadeCups + state.recipe.makesInCups};
+
+    return {...state, inventory, day};
 };
 
 // const updateDay = (state: State) => {
@@ -33,11 +62,6 @@ const tryMakeLemonade = (currentMadeCups: number, inventory: Inventory, recipe: 
 //         return state;
 //     }
 // };
-
-const updateDay = (day: Day, cupsMade: number) => ({
-    ...day,
-    currentMadeCups: day.currentMadeCups + cupsMade,
-})
 
 const root = (state: State = initialState, action: Action) => {
 
@@ -57,8 +81,8 @@ const root = (state: State = initialState, action: Action) => {
                 ...state,
                 day: {
                     actualSoldCount: 0,
+                    chanceToSell: 1,
                     currentMadeCups: 0,
-                    potentialSoldCount: 10,
                 } as Day
             }
         case ActionType.PASS_TIME:
@@ -73,15 +97,15 @@ const root = (state: State = initialState, action: Action) => {
                 return state;
             }
 
-            const { cupsMade, inventory } =
-                tryMakeLemonade(state.day.currentMadeCups, state.inventory, state.recipe);
+            const newState = trySell(tryMakeLemonade(state));
+
+            // const { cupsMade, inventory } =
+            //     tryMakeLemonade(state.day.currentMadeCups, state.inventory, state.recipe);
 
             return {
-                ...state,
+                ...newState,
                 currentTime: state.currentTime + action.ticks,
-                day: updateDay(state.day, cupsMade),
                 hasDayEnded: (state.currentTime % state.config.dayLength) === (state.config.dayLength - 1),
-                inventory,
             }
         case ActionType.START_TIME:
             return {

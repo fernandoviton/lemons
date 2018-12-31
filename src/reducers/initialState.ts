@@ -17,8 +17,8 @@ export default {
 
     day: {
         actualSoldCount: 0,
+        chanceToSell: 1.0,
         currentMadeCups: 0,
-        potentialSoldCount: 0,
     },
 
     money: 4.25 * 2,
