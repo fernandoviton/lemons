@@ -25,8 +25,15 @@ const updateDay = (day: Day, currentMadeCupsDelta?: number, soldCountDelta?: num
 })
 
 const trySell = (state: State) =>
-    state.day.currentMadeCups > 0 && state.day.chanceToSell === 1.0
-        ? {...state, day: updateDay(state.day, -1, 1)}
+    state.day.currentMadeCups > 0
+        && state.inventory.cups > 0
+        && state.day.chanceToSell === 1.0
+        ? {
+            ...state,
+            day: updateDay(state.day, -1, 1),
+            inventory: {...state.inventory, cups: state.inventory.cups - 1},
+            money: state.money + state.salePrice,
+        }
         : state;
 
 const tryMakeLemonade = (state: State) => {
@@ -99,9 +106,6 @@ const root = (state: State = initialState, action: Action) => {
             }
 
             const newState = trySell(tryMakeLemonade(state));
-
-            // const { cupsMade, inventory } =
-            //     tryMakeLemonade(state.day.currentMadeCups, state.inventory, state.recipe);
 
             return {
                 ...newState,

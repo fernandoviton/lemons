@@ -139,23 +139,46 @@ describe('PassTime', () => {
             ...stateDuringDay,
             hasDayEnded: true
         };
+        const stateWithNoCups = {
+            ...stateWithMadeLemonade,
+            inventory: {
+                ...stateWithMadeLemonade.inventory,
+                cups: 0,
+            }
+        };
 
-        it ('when chance to sell is 1 and have made lemonade and not end of day, will sell one', () =>
-            expect(reducer(stateWithMadeLemonade, passTime(1)).day.actualSoldCount)
-                .toBe(stateWithMadeLemonade.day.actualSoldCount + 1));
-        it ('when chance to sell is 1 and have made lemonade and end of day, wont sell', () =>
-            expect(reducer(stateWithMadeLemonadeAtEndOfDay, passTime(1)).day.actualSoldCount)
-                .toBe(stateWithMadeLemonade.day.actualSoldCount));
-        it ('when chance to sell is 1 and no made lemonade (and missing ingredients), wont sell', () => {
+        it ('when chance to sell is 1 and have made lemonade and not end of day, will sell one and increase money and decrease cups', () => {
+            const newState = reducer(stateWithMadeLemonade, passTime(1));
+            expect(newState.day.actualSoldCount).toBe(stateWithMadeLemonade.day.actualSoldCount + 1);
+            expect(newState.money).toBe(stateWithMadeLemonade.money + stateWithMadeLemonade.salePrice);
+            expect(newState.inventory.cups).toBe(stateWithMadeLemonade.inventory.cups - 1);
+        });
+        it ('when chance to sell is 1 and have made lemonade and end of day, wont sell and money and cups stays the same', () => {
+            const newState = reducer(stateWithMadeLemonadeAtEndOfDay, passTime(1));
+            expect(newState.day.actualSoldCount).toBe(stateWithMadeLemonade.day.actualSoldCount);
+            expect(newState.money).toBe(stateWithMadeLemonade.money);
+            expect(newState.inventory.cups).toBe(stateWithMadeLemonade.inventory.cups);
+        });
+        it ('when chance to sell is 1 and no made lemonade (and missing ingredients), wont sell and money and cups stays the same', () => {
             const state = {
                 ...stateWithMadeLemonade,
                 day: {...stateWithMadeLemonade.day, currentMadeCups: 0},
                 inventory: {...stateWithMadeLemonade.inventory, lemons: 0},
             };
-            expect(reducer(state, passTime(1)).day.actualSoldCount)
-                .toBe(stateWithMadeLemonade.day.actualSoldCount)
-            });
+            const newState = reducer(state, passTime(1));
+            expect(newState.day.actualSoldCount).toBe(stateWithMadeLemonade.day.actualSoldCount);
+            expect(newState.money).toBe(state.money);
+            expect(newState.inventory.cups).toBe(state.inventory.cups);
         });
+        it ('when chance to sell is 1 and have no cups, wont sell and money and cups stays the same', () => {
+            const newState = reducer(stateWithNoCups, passTime(1));
+            expect(newState.day.actualSoldCount).toBe(stateWithNoCups.day.actualSoldCount);
+            expect(newState.money).toBe(stateWithNoCups.money);
+            expect(newState.inventory.cups).toBe(stateWithNoCups.inventory.cups);
+        });
+
+    });
+
 });
 
 describe('StartTime', () => {

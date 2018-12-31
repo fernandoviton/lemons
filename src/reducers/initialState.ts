@@ -22,6 +22,7 @@ export default {
     },
 
     money: 4.25 * 2,
+    salePrice: .25,
 
     inventory: {
         cups: 20,
@@ -40,6 +41,6 @@ export default {
     } as Recipe,
 
     currentTime: 0,
+    hasDayEnded: true,
     isTimerOn: false,
-    // hasDayEnded: true,
 } as State;
