@@ -1,4 +1,4 @@
-import { buyItem, nextDay, passTime, pauseTime, startTime } from '../actions';
+import { buyItem, passTime, pauseTime, startNextDay, startTime } from '../actions';
 import reducer from './';
 import defaultState from './initialState';
 
@@ -12,7 +12,7 @@ describe('BuyItem', () => {
             .toEqual(defaultState.money - .5));
 });
 
-describe('NextDay', () => {
+describe('StartNextDay', () => {
     const stateAtDayEnd = {
         ...defaultState,
         currentTime: defaultState.config.dayLength,
@@ -24,11 +24,11 @@ describe('NextDay', () => {
     };
 
     it ('when not at end of day does nothing', () =>
-        expect(reducer(stateDuringDay, nextDay())).toBe(stateDuringDay));
+        expect(reducer(stateDuringDay, startNextDay())).toBe(stateDuringDay));
     it ('when at end of day sets hasDayEnded to false', () =>
-        expect(reducer(stateAtDayEnd, nextDay()).hasDayEnded).toBe(false));
+        expect(reducer(stateAtDayEnd, startNextDay()).hasDayEnded).toBe(false));
     it ('when at end of day resets day', () => {
-        const day = reducer(stateAtDayEnd, nextDay()).day;
+        const day = reducer(stateAtDayEnd, startNextDay()).day;
         expect(day.actualSoldCount).toBe(0);
         expect(day.currentMadeCups).toBe(0);
         expect(day.chanceToSell).toBeGreaterThanOrEqual(0);
@@ -45,6 +45,7 @@ describe('PassTime', () => {
             chanceToSell: 0,
         },
         hasDayEnded: true,
+        isTimerOn: true,
     };
     const stateDuringDay = {
         ...stateAtDayEnd,
@@ -64,21 +65,25 @@ describe('PassTime', () => {
         it ('when hasDayEnded, currentTime doesnt change', () => {
             expect(reducer(stateAtDayEnd, passTime(1)).currentTime).toBe(stateAtDayEnd.currentTime);
         });
+        it ('when isTimerOn is false, currentTime doesnt change', () =>
+            expect(reducer({...stateDuringDay, isTimerOn: false}, passTime(1)).currentTime)
+                .toBe(stateDuringDay.currentTime));
+
     }),
     describe('hasDayEnded', () => {
         const expectPassTime = (currentTime: number) =>
-            expect(reducer({...defaultState, currentTime}, passTime(1)).hasDayEnded);
+            expect(reducer({...stateDuringDay, currentTime}, passTime(1)).hasDayEnded);
 
         it ('if currentTime moves to new day, hasDayEnded gets set to true', () => {
-            expectPassTime(defaultState.config.dayLength - 1).toBe(true);
-            expectPassTime((defaultState.config.dayLength * 2) - 1).toBe(true);
+            expectPassTime(stateDuringDay.config.dayLength - 1).toBe(true);
+            expectPassTime((stateDuringDay.config.dayLength * 2) - 1).toBe(true);
         });
 
-        it ('returns false otherwse', () => {
+        it ('if currentTime doesnt move to new day, hasDayEnded stays false', () => {
             expectPassTime(0).toBe(false);
-            expectPassTime(defaultState.config.dayLength).toBe(false);
-            expectPassTime(defaultState.config.dayLength + 1).toBe(false);
-            expectPassTime(defaultState.config.dayLength * 2).toBe(false);
+            expectPassTime(stateDuringDay.config.dayLength).toBe(false);
+            expectPassTime(stateDuringDay.config.dayLength + 1).toBe(false);
+            expectPassTime(stateDuringDay.config.dayLength * 2).toBe(false);
         });
     }),
     describe('currentMadeCups', () => {

@@ -17,11 +17,13 @@ export interface DayProps {
 export interface StandProps {
     currentTime: number,
     day: DayProps,
+    hasDayEnded: boolean,
     inventory: Inventory,
     isTimerOn: boolean,
 
     onStart: () => void,
     onPause: () => void,
+    onStartNextDay: () =>  void,
 }
 
 // tslint:disable:jsx-no-lambda
@@ -49,14 +51,21 @@ const makeGrid = (props: StandProps) => (
 
 export default (props: StandProps) => (
     <div>
-        { !props.isTimerOn &&
+        { props.hasDayEnded &&
+            <button
+                className="timer-button btn btn-primary"
+                onClick={() => props.onStartNextDay()}>
+                Start Next Day
+            </button>
+        }
+        { !props.hasDayEnded && !props.isTimerOn &&
             <button
                 className="timer-button btn btn-primary"
                 onClick={() => props.onStart()}>
-                Start
+                Go
             </button>
         }
-        { props.isTimerOn &&
+        { !props.hasDayEnded && props.isTimerOn &&
             <button
                 className="timer-button btn btn-primary"
                 onClick={() => props.onPause()}>

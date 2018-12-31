@@ -73,7 +73,7 @@ const root = (state: State = initialState, action: Action) => {
                 ...state,
                 inventory: {...state.inventory, [action.name]: amount},
                 money};
-        case ActionType.NEXT_DAY:
+        case ActionType.START_NEXT_DAY:
             if (!state.hasDayEnded) {
                 return state;
             }
@@ -94,7 +94,7 @@ const root = (state: State = initialState, action: Action) => {
                 throw new Error('>1 time to passTime is NYI');
             }
 
-            if (state.hasDayEnded) {
+            if (state.hasDayEnded || !state.isTimerOn) {
                 return state;
             }
 

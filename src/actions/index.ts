@@ -3,7 +3,7 @@ import { Action } from 'redux';
 export enum ActionType {
     BUY_ITEM = 'BUY_ITEM',
     END_DAY = 'END_DAY',
-    NEXT_DAY = 'NEXT_DAY',
+    START_NEXT_DAY = 'START_NEXT_DAY',
     PASS_TIME = 'PASS_TIME',
     START_TIME = 'START_TIME', // START_TIMER
     PAUSE_TIME = 'PAUSE_TIME', // PAUSE_TIMER
@@ -31,11 +31,11 @@ export const endDay = (): EndDay => ({
     type: ActionType.END_DAY
 });
 
-export interface NextDay {
-    readonly type: ActionType.NEXT_DAY;
+export interface StartNextDay {
+    readonly type: ActionType.START_NEXT_DAY;
 }
-export const nextDay = (): NextDay => ({
-    type: ActionType.NEXT_DAY
+export const startNextDay = (): StartNextDay => ({
+    type: ActionType.START_NEXT_DAY
 });
 
 export interface PassTime {
@@ -64,7 +64,7 @@ export const pauseTime = (): PauseTime => ({
 export type Action =
     BuyItem
     | EndDay
-    | NextDay
+    | StartNextDay
     | PassTime
     | StartTime
     | PauseTime;

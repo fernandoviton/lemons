@@ -1,5 +1,3 @@
-import gameTimer from "./gameTimer";
-
-const middleware: any[] = [gameTimer];
+const middleware: any[] = [];
 
 export default middleware;
