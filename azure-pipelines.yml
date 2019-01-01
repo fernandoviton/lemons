@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+  vmImage: 'vs2017-win2016'
 
 steps:
 - task: NodeTool@0
@@ -17,5 +17,28 @@ steps:
 
 - script: |
     npm install
+  displayName: 'Install'
+
+- script: |
+    npm test
+  displayName: 'Run tests'
+  env: { CI: true }
+
+- script: |
     npm run build
-  displayName: 'npm install and build'
+  displayName: 'Build'
+  env: { CI: true }
+
+# Azure File Copy
+# Copy files to Azure blob or VM(s)
+# Copy contents to Azure blob
+# See this for setting up service connection: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=vsts
+- task: AzureFileCopy@2
+  displayName: 'Publish Site Contents'
+  inputs:
+    sourcePath: $(Build.SourcesDirectory)/build
+    azureConnectionType: ConnectedServiceNameARM
+    azureSubscription: AzureFileCopy # Name of service connection
+    destination: azureBlob
+    storage: lemony
+    containerName: $web
