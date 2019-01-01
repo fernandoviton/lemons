@@ -2,8 +2,8 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Inventory } from "../store";
 
-import 'ag-grid/dist/styles/ag-grid.css';
-import 'ag-grid/dist/styles/ag-theme-balham.css';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './stand.css';
 
 export interface DayProps {
