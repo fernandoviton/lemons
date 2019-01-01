@@ -2,6 +2,11 @@ import { Action } from 'redux';
 
 export enum ActionType {
     BUY_ITEM = 'BUY_ITEM',
+    END_DAY = 'END_DAY',
+    START_NEXT_DAY = 'START_NEXT_DAY',
+    PASS_TIME = 'PASS_TIME',
+    START_TIME = 'START_TIME', // START_TIMER
+    PAUSE_TIME = 'PAUSE_TIME', // PAUSE_TIMER
 }
 
 // Note: Redux only supports plain objects, not classes for actions
@@ -19,5 +24,47 @@ export const buyItem = (name: string, amount: number, cost: number): BuyItem => 
     type: ActionType.BUY_ITEM,
 });
 
+export interface EndDay {
+    readonly type: ActionType.END_DAY;
+}
+export const endDay = (): EndDay => ({
+    type: ActionType.END_DAY
+});
+
+export interface StartNextDay {
+    readonly type: ActionType.START_NEXT_DAY;
+}
+export const startNextDay = (): StartNextDay => ({
+    type: ActionType.START_NEXT_DAY
+});
+
+export interface PassTime {
+    readonly ticks: number;
+    readonly type: ActionType.PASS_TIME;
+}
+export const passTime = (ticks: number): PassTime => ({
+    ticks,
+    type: ActionType.PASS_TIME
+});
+
+export interface StartTime {
+    readonly type: ActionType.START_TIME;
+}
+export const startTime = (): StartTime => ({
+    type: ActionType.START_TIME
+});
+
+export interface PauseTime {
+    readonly type: ActionType.PAUSE_TIME;
+}
+export const pauseTime = (): PauseTime => ({
+    type: ActionType.PAUSE_TIME
+});
+
 export type Action =
-    BuyItem;
+    BuyItem
+    | EndDay
+    | StartNextDay
+    | PassTime
+    | StartTime
+    | PauseTime;

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import './App.css';
 import AppHeader from './containers/appHeader';
 import ItemStore from './containers/itemStore';
+import Stand from './containers/stand';
 
 class App extends React.Component {
   public render() {
@@ -11,8 +12,9 @@ class App extends React.Component {
       <BrowserRouter>
         <div>
           <AppHeader/>
-          <div className="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+          <div>
             <Route path="/store" component={ItemStore}/>
+            <Route path="/" component={Stand} exact={true}/>
           </div>
         </div>
       </BrowserRouter>
